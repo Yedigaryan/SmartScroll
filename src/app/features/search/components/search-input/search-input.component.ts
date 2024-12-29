@@ -4,7 +4,7 @@ import {MatInput} from '@angular/material/input';
 import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule} from '@angular/forms';
 import {MatIcon} from '@angular/material/icon';
 import {MatIconButton} from '@angular/material/button';
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from '@angular/material/autocomplete';
 import {AsyncPipe} from '@angular/common';
 import {map, switchMap} from 'rxjs/operators';
