@@ -40,7 +40,7 @@ export const searchReducer = createReducer(
     loading: false,
     loadMore: false,
   })),
-  on(Query.queryActions, (state, {query}) => ({
+  on(Query.saveQuery, (state, {query}) => ({
     ...state,
     queries: state.queries.find(item => item === query) ? state.queries.slice(0 ,9) : [
       query,

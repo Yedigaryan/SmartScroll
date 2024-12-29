@@ -1,6 +1,6 @@
 import {createAction, props} from "@ngrx/store";
 
-export const queryActions = createAction(
+export const saveQuery = createAction(
   '[Search] Save Query',
   props<{ query: string }>()
 );

@@ -35,7 +35,7 @@ export class SearchEffects {
       switchMap(({query, results}) => {
 
           if (query && query.length >= 3 && results.length > 0) {
-            return of(Query.queryActions({
+            return of(Query.saveQuery({
               query: query,
             }))
           }

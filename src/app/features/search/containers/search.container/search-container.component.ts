@@ -23,8 +23,8 @@ import {IComment} from '../../interfaces/model-types.interface';
     CdkVirtualForOf,
     MatProgressSpinner
   ],
-  templateUrl: './search.container.component.html',
-  styleUrl: './search.container.component.scss'
+  templateUrl: './search-container.component.html',
+  styleUrl: './search-container.component.scss'
 })
 export class SearchContainerComponent implements OnInit {
   limit = 15;
@@ -48,7 +48,7 @@ export class SearchContainerComponent implements OnInit {
   setupSearch() {
     this.searchControl.valueChanges
       .pipe(
-        debounceTime(300),
+        debounceTime(500 ),
         distinctUntilChanged(),
         takeUntilDestroyed(this.destroyRef)
       )
@@ -58,7 +58,7 @@ export class SearchContainerComponent implements OnInit {
       });
   }
 
-  scrolledIndexChange() {
+  onScrollEnd() {
     if (this.loadMore()) {
       this.currentPage += 1;
 

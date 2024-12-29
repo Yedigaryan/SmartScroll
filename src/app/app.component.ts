@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 
-import {SearchContainerComponent} from './features/search/containers/search.container/search.container.component';
+import {SearchContainerComponent} from './features/search/containers/search.container/search-container.component';
 import {SearchService} from './features/search/services/search.service';
 
 @Component({
