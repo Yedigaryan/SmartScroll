@@ -1,68 +1,50 @@
 import {createReducer, on} from '@ngrx/store';
-import * as SearchActions from '../actions/search.actions';
+
 import {IComment} from '../../interfaces/model-types.interface';
+import * as SearchActions from '../actions/search.actions';
+import * as Query from '../actions/query.actions';
 
 export interface SearchState {
-  queries: string[];
-  results: any[];
-  error: string | null;
-}
-
-interface IQuery {
-  query: string;
-  timestamp: number;
-  resultCount: number;
-}
-
-export interface MockDataState {
-  queries: IQuery[],
+  queries: string[],
   comments: IComment[];
   error: string | null;
+  loading: boolean;
+  loadMore: boolean;
 }
 
-export const mockInitialState: SearchState = {
-  queries: [],
-  results: [],
-  error: null,
-};
-
-export const initialState: MockDataState = {
+export const initialState: SearchState = {
   queries: [],
   comments: [],
   error: null,
+  loading: false,
+  loadMore: false,
 };
 
 export const searchReducer = createReducer(
   initialState,
-  on(SearchActions.loadResultsSuccess, (state, {results}) => ({
+  on(SearchActions.loadResults, (state) => ({
     ...state,
-    results,
+    error: null,
+    loading: true,
   })),
-  on(SearchActions.saveSearchQuery, (state, {query, resultCount}) => ({
+  on(SearchActions.loadResultsSuccess, (state, {results, addToExisting}) => ({
     ...state,
-    queries: [
-      {
-        query,
-        timestamp: Date.now(),
-        resultCount
-      },
-      ...state.queries.slice(0, 9) // Keep last 10 queries
-    ]
+    comments: addToExisting ? [...state.comments, ...results] : results,
+    error: null,
+    loading: false,
+    loadMore: results.length > 0,
   })),
   on(SearchActions.loadResultsFailure, (state, {error}) => ({
     ...state,
     error,
-  }))
-);
-
-export const mockDataReducer = createReducer(
-  initialState,
-  on(SearchActions.loadCommentsSuccess, (state, {comments}) => ({
-    ...state,
-    comments,
+    loading: false,
+    loadMore: false,
   })),
-  on(SearchActions.loadCommentsFailure, (state, {error}) => ({
+  on(Query.queryActions, (state, {query}) => ({
     ...state,
-    error,
-  }))
+    queries: state.queries.find(item => item === query) ? state.queries.slice(0 ,9) : [
+      query,
+      ...state.queries.slice(0, 9) // Keep last 10 queries
+    ],
+  })),
 );

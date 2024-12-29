@@ -1,21 +1,19 @@
 <div class="search-container">
   <app-search-input [formControl]="searchControl"/>
-  <cdk-virtual-scroll-viewport (scrollend)="scrolledIndexChange()" itemSize="30"
-                               class="scroll-viewport">
-    @if (loading) {
-      <p>Loading...</p>
+
+  @if (loading()) {
+    <div>Loading...</div>
+  }
+
+  <div class="scroll-viewport">
+    @if (!results().length) {
+      <div>No data found</div>
     }
 
-    @if (error) {
-      <p>Error: {{ error }}</p>
-    }
-
-    @if (results.length > 0) {
-      <div *cdkVirtualFor="let result of results; let index = index">
-        <p>{{ index + 1}}. {{ result.body }}</p>
+    <cdk-virtual-scroll-viewport (scrollend)="scrolledIndexChange()" itemSize="30" class="h-full">
+      <div *cdkVirtualFor="let result of results(); let index = index">
+        <p>{{ index + 1 }}. {{ result.body }}</p>
       </div>
-    } @else {
-      <p>No results found</p>
-    }
-  </cdk-virtual-scroll-viewport>
+    </cdk-virtual-scroll-viewport>
+  </div>
 </div>

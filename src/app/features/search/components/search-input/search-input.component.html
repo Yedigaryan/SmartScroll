@@ -8,9 +8,9 @@
     <mat-icon>close</mat-icon>
   </button>
   <mat-autocomplete  #auto="matAutocomplete">
-    @for (suggestion of filteredQueries$ | async; track suggestion) {
-    <mat-option [value]="suggestion">
-      {{ suggestion }} (results)
+    @for (query of filteredQueries$ | async; track query) {
+    <mat-option [value]="query">
+      {{ query }}
     </mat-option>
     }
   </mat-autocomplete>
