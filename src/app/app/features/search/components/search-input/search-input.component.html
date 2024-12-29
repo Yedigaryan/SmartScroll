@@ -1,0 +1,10 @@
+<mat-form-field>
+  <mat-label>Global search</mat-label>
+  <input [formControl]="searchControl"  matInput placeholder="Look for somethething">
+  @if (searchControl.value) {
+    <button matSuffix mat-icon-button aria-label="Clear" (click)="searchControl.reset()">
+      <mat-icon>close</mat-icon>
+      close
+    </button>
+  }
+</mat-form-field>

@@ -1,5 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {IComment} from '../interfaces/model-types.interface';
 
 export interface SearchResult {
   id: number;
@@ -11,24 +13,18 @@ export interface SearchResult {
   providedIn: 'root'
 })
 export class SearchService {
-  constructor() { }
+  private baseUrl = 'https://jsonplaceholder.typicode.com';
 
-  search(query: string): Observable<SearchResult[]> {
-    // Here you would typically make an HTTP call to your backend API
-    // For now returning a mock observable with sample data
-    const mockResults: SearchResult[] = [
-      {
-        id: 1,
-        title: `Result for ${query}`,
-        description: 'First search result description'
+  constructor(private http: HttpClient) {
+  }
+
+  searchComments(query: string, page: number, limit: number): Observable<IComment[]> {
+    return this.http.get<IComment[]>(`${this.baseUrl}/posts`, {
+      params: {
+        q: query,
+        _page: page.toString(),
+        _limit: limit.toString(),
       },
-      {
-        id: 2,
-        title: `Another result for ${query}`,
-        description: 'Second search result description'
-      }
-    ];
-
-    return of(mockResults);
+    });
   }
 }

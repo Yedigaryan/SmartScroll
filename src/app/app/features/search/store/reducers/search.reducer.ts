@@ -1,4 +1,4 @@
-import {createReducer, on} from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 import * as SearchActions from '../actions/search.actions';
 import {IComment} from '../../interfaces/model-types.interface';
 
@@ -8,14 +8,7 @@ export interface SearchState {
   error: string | null;
 }
 
-interface IQuery {
-  query: string;
-  timestamp: number;
-  resultCount: number;
-}
-
 export interface MockDataState {
-  queries: IQuery[],
   comments: IComment[];
   error: string | null;
 }
@@ -27,29 +20,21 @@ export const mockInitialState: SearchState = {
 };
 
 export const initialState: MockDataState = {
-  queries: [],
   comments: [],
   error: null,
 };
 
 export const searchReducer = createReducer(
   initialState,
-  on(SearchActions.loadResultsSuccess, (state, {results}) => ({
+  on(SearchActions.loadResultsSuccess, (state, { results }) => ({
     ...state,
     results,
   })),
-  on(SearchActions.saveSearchQuery, (state, {query, resultCount}) => ({
+  on(SearchActions.saveQuery, (state, { query }) => ({
     ...state,
-    queries: [
-      {
-        query,
-        timestamp: Date.now(),
-        resultCount
-      },
-      ...state.queries.slice(0, 9) // Keep last 10 queries
-    ]
+    queries: [...((state as unknown) as SearchState).queries, query],
   })),
-  on(SearchActions.loadResultsFailure, (state, {error}) => ({
+  on(SearchActions.loadResultsFailure, (state, { error }) => ({
     ...state,
     error,
   }))
@@ -57,11 +42,11 @@ export const searchReducer = createReducer(
 
 export const mockDataReducer = createReducer(
   initialState,
-  on(SearchActions.loadCommentsSuccess, (state, {comments}) => ({
+  on(SearchActions.loadCommentsSuccess, (state, { comments }) => ({
     ...state,
     comments,
   })),
-  on(SearchActions.loadCommentsFailure, (state, {error}) => ({
+  on(SearchActions.loadCommentsFailure, (state, { error }) => ({
     ...state,
     error,
   }))

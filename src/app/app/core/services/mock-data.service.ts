@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable, tap} from 'rxjs';
+import {Observable} from 'rxjs';
 import {IComment} from '../../features/search/interfaces/model-types.interface';
 
 @Injectable({
@@ -12,8 +12,6 @@ export class MockDataService {
   constructor(private http: HttpClient) {}
 
   getComments(): Observable<any[]> {
-    return this.http.get<IComment[]>(`${this.baseUrl}/comments`).pipe(tap((comments: IComment[]) => {
-      console.log('comments service', comments)
-    }));
+    return this.http.get<IComment[]>(`${this.baseUrl}/comments`);
   }
 }

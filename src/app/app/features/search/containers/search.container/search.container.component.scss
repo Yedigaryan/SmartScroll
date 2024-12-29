@@ -3,6 +3,7 @@
   align-items: start;
   justify-content: center;
   flex-wrap: wrap;
+  width: 100%;
   margin: 2.5rem 2rem;
 }
 
@@ -10,8 +11,4 @@
   min-height: 20vh;
   width: 100%;
   background-color: #3f4948;
-  border-radius: 1rem;
-  ul {
-    padding: 2rem;
-  }
 }

@@ -1,0 +1,10 @@
+<div class="search-container">
+  <app-search-input/>
+  <cdk-virtual-scroll-viewport itemSize="10" class="scroll-viewport">
+    <ul>
+      @for (post of comments$ | async; track post.id) {
+        <li>{{ post.body }}</li>
+      }
+    </ul>
+  </cdk-virtual-scroll-viewport>
+</div>

@@ -1,10 +1,26 @@
 <div class="search-container">
-  <app-search-input/>
-  <cdk-virtual-scroll-viewport itemSize="10" class="scroll-viewport">
-    <ul>
-      @for (post of posts$ | async; track post.id) {
-        <li>{{ post.title }}</li>
-      }
-    </ul>
+  <app-search-input [formControl]="searchControl"/>
+  <cdk-virtual-scroll-viewport (scrolledIndexChange)="scrolledIndexChange($event)" itemSize="10" class="scroll-viewport">
+    @if (loading) {
+      <p>Loading...</p>
+    }
+
+    @if (error) {
+      <p>Error: {{ error }}</p>
+    }
+
+    @if (results.length > 0) {
+      <ul>
+        @for (result of results; track result.id) {
+          <li>
+            <h3>{{ result.name }}</h3>
+            <p>{{ result.body }}</p>
+          </li>
+        }
+      </ul>
+    }
+    @if (results.length === 0) {
+      <p>No results found</p>
+    }
   </cdk-virtual-scroll-viewport>
 </div>
