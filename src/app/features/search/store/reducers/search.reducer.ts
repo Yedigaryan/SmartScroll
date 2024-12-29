@@ -44,7 +44,7 @@ export const searchReducer = createReducer(
     ...state,
     queries: state.queries.find(item => item === query) ? state.queries.slice(0 ,9) : [
       query,
-      ...state.queries.slice(0, 9) // Keep last 10 queries
+      ...state.queries.slice(0, 9)
     ],
   })),
 );

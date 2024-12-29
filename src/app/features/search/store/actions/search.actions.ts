@@ -19,5 +19,5 @@ export const loadResultsSuccess = createAction(
 
 export const loadResultsFailure = createAction(
   '[Search] Load Results Failure',
-  props<{ error: any }>()
+  props<{ error: string | null }>()
 );

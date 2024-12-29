@@ -4,8 +4,6 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from '@angular/material/autocomplete';
 import {MatInput} from '@angular/material/input';
-import {MatIcon} from '@angular/material/icon';
-import {MatIconButton} from '@angular/material/button';
 import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule} from '@angular/forms';
 
 import {map, switchMap} from 'rxjs/operators';
@@ -21,8 +19,6 @@ import {selectSearchQueries} from '../../store';
     MatFormField,
     MatInput,
     ReactiveFormsModule,
-    MatIcon,
-    MatIconButton,
     MatAutocompleteTrigger,
     MatAutocomplete,
     MatOption,
@@ -40,6 +36,7 @@ import {selectSearchQueries} from '../../store';
   ]
 })
 export class SearchInputComponent implements OnInit, ControlValueAccessor {
+
   searchControl: FormControl = new FormControl('', {nonNullable: true});
   filteredQueries$: Observable<string[]> = this.searchControl.valueChanges.pipe(
     switchMap(value => this._filter(value || ''))

@@ -4,9 +4,6 @@
          [formControl]="searchControl"
          [matAutocompletePosition]="'below'"
          [matAutocomplete]="auto">
-  <button matSuffix mat-icon-button aria-label="Clear" (click)="searchControl.setValue('')">
-    <mat-icon>close</mat-icon>
-  </button>
   <mat-autocomplete  #auto="matAutocomplete">
     @for (query of filteredQueries$ | async; track query) {
     <mat-option [value]="query">
