@@ -1,8 +1,8 @@
 import {createReducer, on} from '@ngrx/store';
 
-import {IComment} from '../../interfaces/model-types.interface';
 import * as SearchActions from '../actions/search.actions';
 import * as Query from '../actions/query.actions';
+import {IComment} from '../../interfaces/model-types.interface';
 
 export interface SearchState {
   queries: string[],

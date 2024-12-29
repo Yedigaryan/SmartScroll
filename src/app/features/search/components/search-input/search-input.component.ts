@@ -1,16 +1,18 @@
 import {Component, DestroyRef, inject, OnInit} from '@angular/core';
+import {AsyncPipe} from '@angular/common';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
+import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from '@angular/material/autocomplete';
 import {MatInput} from '@angular/material/input';
-import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule} from '@angular/forms';
 import {MatIcon} from '@angular/material/icon';
 import {MatIconButton} from '@angular/material/button';
-import {Observable} from 'rxjs';
-import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from '@angular/material/autocomplete';
-import {AsyncPipe} from '@angular/common';
+import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule} from '@angular/forms';
+
 import {map, switchMap} from 'rxjs/operators';
-import {selectSearchQueries} from '../../store';
+import {Observable} from 'rxjs';
 import {Store} from '@ngrx/store';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+
+import {selectSearchQueries} from '../../store';
 
 @Component({
   selector: 'app-search-input',

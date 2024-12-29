@@ -1,6 +1,8 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+
+import {Observable} from 'rxjs';
+
 import {IComment} from '../interfaces/model-types.interface';
 
 export interface SearchResult {
@@ -15,8 +17,7 @@ export interface SearchResult {
 export class SearchService {
   private baseUrl = 'https://jsonplaceholder.typicode.com';
 
-  constructor(private http: HttpClient) {
-  }
+  private http = inject(HttpClient);
 
   searchComments(query: string, page: number, limit: number): Observable<IComment[]> {
     return this.http.get<IComment[]>(`${this.baseUrl}/posts`, {

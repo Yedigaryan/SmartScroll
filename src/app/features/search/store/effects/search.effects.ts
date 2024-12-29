@@ -1,8 +1,8 @@
 import {inject, Injectable} from '@angular/core';
 
-import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {catchError, map, switchMap} from 'rxjs/operators';
 import {EMPTY, of} from 'rxjs';
+import {Actions, createEffect, ofType} from '@ngrx/effects';
 
 import * as SearchActions from '../actions/search.actions';
 import * as Query from '../actions/query.actions';

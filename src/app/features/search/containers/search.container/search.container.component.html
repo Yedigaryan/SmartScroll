@@ -1,12 +1,13 @@
 <div class="search-container">
   <app-search-input [formControl]="searchControl"/>
 
-  @if (loading()) {
-    <div>Loading...</div>
-  }
 
   <div class="scroll-viewport">
-    @if (!results().length) {
+    @if (loading()) {
+      <div class="scroll-viewport__spinner">
+        <mat-spinner />
+      </div>
+    } @else if (!results().length) {
       <div>No data found</div>
     }
 

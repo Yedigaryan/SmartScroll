@@ -1,12 +1,15 @@
 import {Component, DestroyRef, inject, OnInit, Signal} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
+import {MatProgressSpinner} from '@angular/material/progress-spinner';
+
 import {debounceTime, distinctUntilChanged} from 'rxjs';
 import {Store} from '@ngrx/store';
+
 import {loadResults, selectLoading, selectLoadMore, selectResults} from '../../store';
 import {SearchInputComponent} from '../../components/search-input/search-input.component';
-import {CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 import {IComment} from '../../interfaces/model-types.interface';
-import {FormControl, ReactiveFormsModule} from '@angular/forms';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 
 @Component({
@@ -17,7 +20,8 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
     CdkVirtualScrollViewport,
     CdkFixedSizeVirtualScroll,
     ReactiveFormsModule,
-    CdkVirtualForOf
+    CdkVirtualForOf,
+    MatProgressSpinner
   ],
   templateUrl: './search.container.component.html',
   styleUrl: './search.container.component.scss'
