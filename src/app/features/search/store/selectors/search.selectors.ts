@@ -19,3 +19,8 @@ export const selectComments = createSelector(
   selectMockDataState,
   (state) => state?.comments ?? []
 );
+
+export const selectSearchQueries = createSelector(
+  selectSearchState,
+  (state) => state.queries
+);

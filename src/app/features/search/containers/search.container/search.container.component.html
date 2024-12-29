@@ -1,6 +1,7 @@
 <div class="search-container">
   <app-search-input [formControl]="searchControl"/>
-  <cdk-virtual-scroll-viewport (scrolledIndexChange)="scrolledIndexChange($event)" itemSize="10" class="scroll-viewport">
+  <cdk-virtual-scroll-viewport (scrollend)="scrolledIndexChange()" itemSize="30"
+                               class="scroll-viewport">
     @if (loading) {
       <p>Loading...</p>
     }
@@ -10,16 +11,10 @@
     }
 
     @if (results.length > 0) {
-      <ul>
-        @for (result of results; track result.id) {
-          <li>
-            <h3>{{ result.name }}</h3>
-            <p>{{ result.body }}</p>
-          </li>
-        }
-      </ul>
-    }
-    @if (results.length === 0) {
+      <div *cdkVirtualFor="let result of results; let index = index">
+        <p>{{ index + 1}}. {{ result.body }}</p>
+      </div>
+    } @else {
       <p>No results found</p>
     }
   </cdk-virtual-scroll-viewport>

@@ -1,10 +1,17 @@
 <mat-form-field>
-  <mat-label>Global search</mat-label>
-  <input [formControl]="searchControl"  matInput placeholder="Look for somethething">
-  @if (searchControl.value) {
-    <button matSuffix mat-icon-button aria-label="Clear" (click)="searchControl.reset()">
-      <mat-icon>close</mat-icon>
-      close
-    </button>
-  }
+  <mat-label>Search</mat-label>
+  <input matInput
+         [formControl]="searchControl"
+         [matAutocompletePosition]="'below'"
+         [matAutocomplete]="auto">
+  <button matSuffix mat-icon-button aria-label="Clear" (click)="searchControl.setValue('')">
+    <mat-icon>close</mat-icon>
+  </button>
+  <mat-autocomplete  #auto="matAutocomplete">
+    @for (suggestion of filteredQueries$ | async; track suggestion) {
+    <mat-option [value]="suggestion">
+      {{ suggestion }} (results)
+    </mat-option>
+    }
+  </mat-autocomplete>
 </mat-form-field>

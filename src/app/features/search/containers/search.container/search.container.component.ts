@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {debounceTime, distinctUntilChanged, Observable, of, tap} from 'rxjs';
 import {Store} from '@ngrx/store';
-import {loadComments, selectComments} from '../../store';
+import {loadComments, selectComments, saveSearchQuery} from '../../store';
 import {SearchInputComponent} from '../../components/search-input/search-input.component';
-import {CdkFixedSizeVirtualScroll, CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
+import {CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 import {IComment} from '../../interfaces/model-types.interface';
 import {SearchService} from '../../services/search.service';
 import {MockDataService} from '../../../../core/services/mock-data.service';
@@ -18,17 +18,19 @@ import {catchError, switchMap} from 'rxjs/operators';
     SearchInputComponent,
     CdkVirtualScrollViewport,
     CdkFixedSizeVirtualScroll,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CdkVirtualForOf
   ],
   templateUrl: './search.container.component.html',
   styleUrl: './search.container.component.scss'
 })
 export class SearchContainerComponent implements OnInit {
-  pageSize = 20;
+  limit = 15;
   currentPage = 1;
   comments$: Observable<IComment[]>;
   results: IComment[] = [];
   loading = false;
+  loadMore = false;
   error: string | null = null;
   searchControl = new FormControl('');
 
@@ -52,13 +54,21 @@ export class SearchContainerComponent implements OnInit {
   setupSearch() {
     this.searchControl.valueChanges
       .pipe(
-        debounceTime(300), // Wait 300ms after each keystroke
-        distinctUntilChanged(), // Ignore duplicate queries
+        debounceTime(300),
+        distinctUntilChanged(),
         switchMap((query: string | null) => {
           this.loading = true;
           this.error = null;
           this.currentPage = 1;
-          return this.searchService.searchComments(query ?? '', this.currentPage, this.pageSize).pipe(
+          return this.searchService.searchComments(query ?? '', this.currentPage, this.limit).pipe(
+            tap(results => {
+              if (query && query.length >= 3 && results.length > 0) {
+                this.store.dispatch(saveSearchQuery({
+                  query: query,
+                  resultCount: results.length
+                }));
+              }
+            }),
             catchError(() => {
               this.error = 'Something went wrong. Please try again.';
               this.results = [];
@@ -70,40 +80,37 @@ export class SearchContainerComponent implements OnInit {
       )
       .subscribe((data: IComment[] | never[]) => {
         this.results = data;
+        this.loadMore = data.length > 0;
         this.loading = false;
       });
   }
 
-  scrolledIndexChange(index: number) {
-    console.log('index', index)
-    const endIndex = index + this.pageSize;
-    const startIndex = index;
-
-    if (endIndex >= this.results.length - 5 && index < this.results.length - 5) {
-      console.log('loadMoreData');
+  scrolledIndexChange() {
+    if (this.loadMore) {
       this.loadMoreData();
-    }
-
-    if (startIndex <= this.currentPage && this.currentPage > 1) {
-      // this.loadPreviousData();
-      console.log('loadPreviousData');
     }
   }
 
   loadMoreData() {
-    this.currentPage++;
     this.loading = true;
 
-    this.searchService.searchComments(this.searchControl.value ?? '', this.currentPage, this.pageSize)
+    this.currentPage += 1;
+
+    this.searchService.searchComments(this.searchControl.value ?? '', this.currentPage, this.limit)
       .pipe(
         catchError(() => {
           this.error = 'Failed to load more results';
+
           this.loading = false;
+
           return of([]);
         })
       )
       .subscribe(newData => {
         this.results = [...this.results, ...newData];
+
+        this.loadMore = newData.length > 0;
+
         this.loading = false;
       });
   }
